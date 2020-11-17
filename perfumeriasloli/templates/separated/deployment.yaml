@@ -1,0 +1,60 @@
+{{ if .Values.activeSeparated }}
+
+{{ $dot := . }}
+        {{ $Values := .Values }}
+        {{ $Release := .Release }}
+        {{ $Chart := .Chart }}
+        {{ $Template := .Template }}
+        {{ range $featureOperation_index, $featureOperation_element := $Values.featureOperations}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "perfumeriasloli.fullname" $dot }}-{{$featureOperation_element.name}}
+  namespace: default
+  labels:
+          {{- include "perfumeriasloli.labels" $dot | nindent 6 }}
+      featureOperation: {{$featureOperation_element.name}}
+spec:
+  replicas: {{ $featureOperation_element.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "perfumeriasloli.name" $dot }}
+      app.kubernetes.io/instance: {{ $Release.Name }}
+      featureOperation: {{$featureOperation_element.name}}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "perfumeriasloli.name" $dot }}
+        app.kubernetes.io/instance: {{ $Release.Name }}
+        featureOperation: {{$featureOperation_element.name}}
+    spec:
+      containers:
+        - name: {{ include "perfumeriasloli.fullname" $dot }}
+          image: "perfumeriasloli:local"
+          imagePullPolicy: IfNotPresent
+          env:
+          - name: "JAVA_TOOL_OPTIONS"
+            value: {{ $featureOperation_element.env }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: {{ $featureOperation_element.initialDelaySeconds }} #will wait this sec after start of the container to check the liveness. Default 0
+            periodSeconds: 10 #will check this every this seconds. Default 10
+            timeoutSeconds: 10 #the request has maximum this seconds to return a response
+            failureThreshold: 3 #if after this tries will restart the container. Default 3
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: {{ $featureOperation_element.initialDelaySeconds }} #will wait this sec after start of the container to check the liveness. Default 0
+            periodSeconds: 3 #will check this every this seconds. Default 10
+            timeoutSeconds: 3 #the request has maxmium this seconds to return a response
+            failureThreshold: 3 #if after this tries the node is marked as Unready. Default 3
+          resources:
+              {{- toYaml $featureOperation_element.resources | nindent 20 }}
+---
+        {{ end }}
+{{ end }}

@@ -1,0 +1,68 @@
+# Default values for perfumeriasloli.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+activeFat: false
+activeSeparated: true
+
+featureOperations:
+  - name: search
+    path: /findProducts
+    env: "-XX:+UseG1GC -Xms150M -Xmx150M -Dfile.encoding=UTF-8 -Djava.security.egd=file:/dev/urandom -Dspring.application.name=perfumerias-loli -Dspring.profiles.active=search"
+    replicaCount: 2
+    initialDelaySeconds: 50
+    resources:
+      limits:
+        cpu: '500m'
+        memory: 200Mi
+      requests:
+        cpu: '500m'
+        memory: 200Mi
+  - name: add-to-cart
+    path: /addToCart
+    env: "-XX:+UseG1GC -Xms150M -Xmx150M -Dfile.encoding=UTF-8 -Djava.security.egd=file:/dev/urandom -Dspring.application.name=perfumerias-loli -Dspring.profiles.active=cart"
+    replicaCount: 1
+    initialDelaySeconds: 50
+    resources:
+      limits:
+        cpu: '500m'
+        memory: 200Mi
+      requests:
+        cpu: '500m'
+        memory: 200Mi
+  - name: purchase
+    path: /purchase
+    env: "-XX:+UseG1GC -Xms150M -Xmx150M -Dfile.encoding=UTF-8 -Djava.security.egd=file:/dev/urandom -Dspring.application.name=perfumerias-loli -Dspring.profiles.active=purchase"
+    replicaCount: 1
+    initialDelaySeconds: 50
+    resources:
+      limits:
+        cpu: '500m'
+        memory: 200Mi
+      requests:
+        cpu: '500m'
+        memory: 200Mi
+  - name: cancel
+    path: /cancel
+    env: "-XX:+UseG1GC -Xms150M -Xmx150M -Dfile.encoding=UTF-8 -Djava.security.egd=file:/dev/urandom -Dspring.application.name=perfumerias-loli -Dspring.profiles.active=cancel"
+    replicaCount: 1
+    initialDelaySeconds: 50
+    resources:
+      limits:
+        cpu: '500m'
+        memory: 200Mi
+      requests:
+        cpu: '500m'
+        memory: 200Mi
+  - name: scan-contents
+    path: /scanContents
+    env: "-XX:+UseG1GC -Xms150M -Xmx150M -Dfile.encoding=UTF-8 -Djava.security.egd=file:/dev/urandom -Dspring.application.name=perfumerias-loli -Dspring.profiles.active=scan"
+    replicaCount: 1
+    initialDelaySeconds: 50
+    resources:
+      limits:
+        cpu: '500m'
+        memory: 200Mi
+      requests:
+        cpu: '500m'
+        memory: 200Mi

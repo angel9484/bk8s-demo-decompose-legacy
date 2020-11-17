@@ -1,0 +1,7 @@
+cart:
+  enabled: false
+cache:
+  inventory:
+    enabled: false
+scan:
+  enabled: false

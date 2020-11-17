@@ -1,0 +1,24 @@
+{{ if .Values.activeFat }}
+        {{ $dot := . }}
+        {{ $Values := .Values }}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+    name: {{ include "perfumeriasloli.fullname" $dot }}
+    labels:
+        {{- include "perfumeriasloli.labels" $dot | nindent 8 }}
+        {{- with $Values.ingress.annotations }}
+    annotations:
+        {{- toYaml . | nindent 6 }}
+        {{- end }}
+spec:
+    rules:
+        - host: {{ printf "%s.es" $Values.nameOverride | quote }}
+          http:
+              paths:
+                  - path: /
+                    backend:
+                        serviceName: {{ include "perfumeriasloli.fullname" $dot }}
+                        servicePort: http
+
+        {{ end }}

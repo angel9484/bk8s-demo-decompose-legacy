@@ -1,0 +1,16 @@
+activeFat: false
+activeSeparated: true
+
+featureOperations:
+  - name: search
+    path: /findProducts
+    replicaCount: 10
+    env: "-XX:+UseG1GC -Xms150M -Xmx150M -Dfile.encoding=UTF-8 -Djava.security.egd=file:/dev/urandom -Dspring.application.name=perfumerias-loli -Dspring.profiles.active=search"
+    initialDelaySeconds: 50
+    resources:
+      limits:
+        cpu: '500m'
+        memory: 200Mi
+      requests:
+        cpu: '500m'
+        memory: 200Mi

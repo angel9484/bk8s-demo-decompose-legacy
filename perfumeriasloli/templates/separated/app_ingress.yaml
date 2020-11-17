@@ -1,0 +1,26 @@
+{{ if .Values.activeSeparated }}
+        {{ $dot := . }}
+        {{ $Values := .Values }}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+    name: {{ include "perfumeriasloli.fullname" $dot }}
+    labels:
+        {{- include "perfumeriasloli.labels" $dot | nindent 8 }}
+        {{- with $Values.ingress.annotations }}
+    annotations:
+        {{- toYaml . | nindent 6 }}
+        {{- end }}
+spec:
+    rules:
+        - host: {{ printf "%s.es" $Values.nameOverride | quote }}
+          http:
+              paths:
+                      {{ range $featureOperation_index, $featureOperation_element := $Values.featureOperations}}
+                  - path: {{$featureOperation_element.path}}
+                    backend:
+                        serviceName: {{ include "perfumeriasloli.fullname" $dot }}--{{$featureOperation_element.name}}
+                        servicePort: http
+            {{ end }}
+
+        {{ end }}
