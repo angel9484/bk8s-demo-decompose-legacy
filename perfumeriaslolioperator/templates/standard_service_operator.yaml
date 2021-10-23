@@ -1,0 +1,14 @@
+apiVersion: com.perfumeriasloli/v1beta1
+kind: StandardService
+metadata:
+  name: perfumerias-loli
+  namespace: default
+spec:
+  service:
+    name: perfumerias-loli
+    replicas: 1
+  image:
+    repository: perfumerias-loli
+    tag: local
+  operation:
+    refreshConfiguration: false
