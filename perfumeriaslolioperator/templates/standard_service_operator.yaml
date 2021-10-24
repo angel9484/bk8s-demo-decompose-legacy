@@ -1,11 +1,11 @@
 apiVersion: com.perfumeriasloli/v1beta1
 kind: StandardService
 metadata:
-  name: perfumerias-loli
+  name: perfumerias-loli-service
   namespace: default
 spec:
   service:
-    name: perfumerias-loli
+    name: perfumerias-loli-service
     replicas: 1
   image:
     repository: perfumerias-loli
